@@ -1,6 +1,6 @@
-import dbConfig from "../config/db.js";
+import dbConfig from "../config/db";
 
-export const connectToDatabase = async (callback) => {
+export const connectToDatabase = async (callback: () => void) => {
   dbConfig
     .initialize()
     .then(callback)
