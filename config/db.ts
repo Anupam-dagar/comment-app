@@ -1,6 +1,4 @@
 import { DataSource } from "typeorm";
-import { Comment } from "../entities/comments";
-import { User } from "../entities/user";
 import env from "./env";
 
 const dbConfig = new DataSource({
@@ -12,8 +10,8 @@ const dbConfig = new DataSource({
   database: env.dbName,
   synchronize: true,
   logging: false,
-  entities: ["../entities/*.ts"],
-  migrations: ["../migrations/*.ts"],
+  entities: ["./dist/entities/*.js"],
+  migrations: ["./dist/migrations/*.js"],
   subscribers: [],
 });
 
