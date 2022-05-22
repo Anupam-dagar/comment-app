@@ -12,8 +12,8 @@ const dbConfig = new DataSource({
   database: env.dbName,
   synchronize: true,
   logging: false,
-  entities: [User, Comment],
-  migrations: [],
+  entities: ["../entities/*.ts"],
+  migrations: ["../migrations/*.ts"],
   subscribers: [],
 });
 
