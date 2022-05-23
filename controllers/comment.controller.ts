@@ -9,8 +9,8 @@ const createComment: IController = asyncController(
   async (req: Request, res: Response) => {
     const body: CreateComment = req.body;
     const createdBy: string = req.headers.createdby as string;
-    await commentService.createComment(body, createdBy);
-    ApiResponse.success(res, {}, 200);
+    const comment = await commentService.createComment(body, createdBy);
+    ApiResponse.success(res, comment, 200);
   }
 );
 

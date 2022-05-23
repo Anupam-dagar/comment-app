@@ -4,11 +4,12 @@ import { User } from "../entities/user";
 
 const CommentRepository = dbConfig.getRepository(Comment).extend({
   async createComment(comment: Comment) {
-    return this.createQueryBuilder(Comment.name)
+    const result = await this.createQueryBuilder(Comment.name)
       .insert()
       .into(Comment)
       .values([comment])
       .execute();
+    return result.generatedMaps[0];
   },
 
   async getComments() {

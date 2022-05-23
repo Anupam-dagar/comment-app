@@ -10,7 +10,7 @@ const createComment = async (comment: CreateComment, createdBy: string) => {
   );
 
   try {
-    await CommentRepository.createComment(commentEntity);
+    return await CommentRepository.createComment(commentEntity);
   } catch (error) {
     throw new DbError(`Error creating comment by user: ${createdBy}: ${error}`);
   }
