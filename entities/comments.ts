@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export class Comment {
@@ -11,12 +16,12 @@ export class Comment {
   @Column()
   public createdBy: string;
 
-  @Column()
+  @CreateDateColumn()
   public createdAt: string;
 
-  @Column()
+  @Column({ default: 0 })
   public upvotes: number;
 
-  @Column()
+  @Column({ nullable: true })
   public parentId: number;
 }

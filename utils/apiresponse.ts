@@ -9,14 +9,12 @@ export class ApiResponse {
     res: Response,
     status: number,
     error: string,
-    name: string,
-    data?: any
+    name: string
   ) => {
     res.statusMessage = error;
     res.status(status).json({
       name,
       message: name,
-      data,
     });
   };
 }
