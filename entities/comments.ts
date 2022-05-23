@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { User } from "./user";
 
 @Entity()
 export class Comment {
@@ -24,4 +27,8 @@ export class Comment {
 
   @Column({ nullable: true })
   public parentId: number;
+
+  @OneToOne(() => User)
+  @JoinColumn({ name: "createdBy" })
+  public user: User;
 }

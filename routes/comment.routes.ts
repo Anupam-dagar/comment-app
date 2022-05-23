@@ -12,4 +12,6 @@ router.post(
   commentController.createComment
 );
 
+router.get("/", commentController.getComments);
+
 export default router;

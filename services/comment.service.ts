@@ -16,6 +16,15 @@ const createComment = async (comment: CreateComment, createdBy: string) => {
   }
 };
 
+const getComments = async () => {
+  try {
+    return CommentRepository.getComments();
+  } catch (error) {
+    throw new DbError(`Error getting comments: ${error}`);
+  }
+};
+
 export default {
   createComment,
+  getComments,
 };

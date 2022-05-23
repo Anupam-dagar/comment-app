@@ -14,6 +14,14 @@ const createComment: IController = asyncController(
   }
 );
 
+const getComments: IController = asyncController(
+  async (req: Request, res: Response) => {
+    const comments = await commentService.getComments();
+    ApiResponse.success(res, { comments }, 200);
+  }
+);
+
 export default {
   createComment,
+  getComments,
 };
