@@ -27,10 +27,10 @@ $(document).ready(function () {
         <div class="flex-fill">
           <div class="d-flex flex-row align-items-start px-2">
             <div class="px-2">
-              <h6>
+              <h6 class="c-text-primary">
                 ${comment.user.name}
-                <span style="color: gray; font-size: 0.89em"
-                  >・ ${comment.createdAt}</span
+                <span style="font-size: 0.89em" class="c-text-secondary"
+                  >・ ${moment(comment.createdAt).fromNow()}</span
                 >
               </h6>
             </div>
@@ -45,12 +45,12 @@ $(document).ready(function () {
           <div class="d-flex flex-row align-items-start">
             <ul class="nav">
               <li class="nav-item">
-                <a class="nav-link" href="#"
-                  ><i class="bi bi-caret-up-fill"></i> Upvote ${comment.upvotes}</a
+                <a class="nav-link c-text-secondary" href="#"
+                  ><i class="bi bi-caret-up-fill"></i> Upvote</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Reply</a>
+                <a class="nav-link c-text-secondary" href="#">Reply</a>
               </li>
             </ul>
           </div>

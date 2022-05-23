@@ -1,0 +1,21 @@
+.c-text-primary {
+  color: #21293c;
+}
+
+.c-text-secondary {
+  color: #4b587c;
+}
+
+.c-text-secondary:hover {
+  color: #2c344a;
+}
+
+.c-btn-primary {
+  background-color: #7e34f6;
+  border-color: #7e34f6;
+}
+
+.c-btn-primary:hover {
+  background-color: #6f2ed9;
+  border-color: #6f2ed9;
+}
