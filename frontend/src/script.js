@@ -6,7 +6,7 @@ $(document).ready(async function () {
   createComment();
   try {
     await getUser();
-    await getComments();
+    // await getComments();
   } catch (error) {
     console.log(`Error fetching data: ${JSON.stringify(error)}`);
   }
