@@ -24,6 +24,9 @@ export class Comment {
   @CreateDateColumn()
   public createdAt: string;
 
+  @Column({ default: null, nullable: true })
+  public parentId: number;
+
   @OneToOne(() => User)
   @JoinColumn({ name: "createdBy" })
   public user: User;
