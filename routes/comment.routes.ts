@@ -20,6 +20,10 @@ router.post(
   commentController.upvoteComment
 );
 
-router.get("/", commentController.getComments);
+router.get(
+  "/",
+  validator.headers(headersSchema.authoriseSchema),
+  commentController.getComments
+);
 
 export default router;

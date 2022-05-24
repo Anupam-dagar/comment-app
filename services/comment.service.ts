@@ -17,9 +17,10 @@ const createComment = async (comment: CreateComment, createdBy: number) => {
   }
 };
 
-const getComments = async () => {
+const getComments = async (userId: number) => {
   try {
-    return CommentRepository.getComments();
+    const comments = await CommentRepository.getComments();
+    return mappingUtilities.mapCommentEntityToCommentModel(comments, userId);
   } catch (error) {
     throw new DbError(`Error getting comments: ${error}`);
   }

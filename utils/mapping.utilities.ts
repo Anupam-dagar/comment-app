@@ -1,7 +1,10 @@
 import { plainToClass } from "class-transformer";
 import { Comment } from "../entities/comments";
 import { Upvotes } from "../entities/upvotes";
-import { CreateComment } from "../models/comment.model";
+import {
+  CreateComment,
+  Comment as CommentModel,
+} from "../models/comment.model";
 
 const mapCreateCommentToCommentEntity = (
   comment: CreateComment,
@@ -23,7 +26,35 @@ const mapDataToCommentUpvotesEntity = (
   });
 };
 
+const mapCommentEntityToCommentModel = (
+  comments: Comment[],
+  userId: number
+): CommentModel[] => {
+  let hasUpvoted = false;
+  const commentModels: CommentModel[] = [];
+
+  return comments.map((comment) => {
+    for (const upvote of comment.upvotes) {
+      if (upvote.upvotedBy === userId) {
+        hasUpvoted = true;
+        break;
+      }
+    }
+
+    return {
+      hasUpvoted,
+      id: comment.id,
+      comment: comment.comment,
+      createdBy: comment.createdBy,
+      createdAt: comment.createdAt,
+      user: comment.user,
+      totalUpvotes: comment.totalUpvotes,
+    } as CommentModel;
+  });
+};
+
 export default {
   mapCreateCommentToCommentEntity,
   mapDataToCommentUpvotesEntity,
+  mapCommentEntityToCommentModel,
 };

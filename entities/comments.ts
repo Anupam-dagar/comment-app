@@ -30,5 +30,7 @@ export class Comment {
 
   @OneToMany(() => Upvotes, (upvote) => upvote.comment)
   @JoinColumn({ name: "id" })
-  public upvotes: Upvotes;
+  public upvotes: Upvotes[];
+
+  public totalUpvotes: number;
 }
