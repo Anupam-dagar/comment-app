@@ -23,7 +23,9 @@ const CommentRepository = dbConfig.getRepository(Comment).extend({
       )
       .loadRelationCountAndMap(
         `${Comment.name}.totalUpvotes`,
-        `${Comment.name}.upvotes`
+        `${Comment.name}.upvotes`,
+        `${Comment.name}.totalUpvotes`,
+        (qb) => qb.where(`${Comment.name}.totalUpvotes.deleted_token IS NULL`)
       )
       .orderBy(`${Comment.name}.createdAt`, "DESC")
       .getMany();
