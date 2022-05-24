@@ -1,46 +1,57 @@
 const backendUrl = "http://localhost";
 let user;
 
-$(document).ready(function () {
+$(document).ready(async function () {
   addCommentInputListener();
-  getUser();
-  getComments();
   createComment();
+  try {
+    await getUser();
+    await getComments();
+  } catch (error) {
+    console.log(`Error fetching data: ${JSON.stringify(error)}`);
+  }
+  handleUpvote();
 });
 
-const getUser = () => {
-  $.get(`${backendUrl}/api/users/login`, (data) => {
+const getUser = async () => {
+  return $.get(`${backendUrl}/api/users/login`, (data) => {
     $("#current-user").attr("src", data.photoUrl);
     user = {
       id: data.id,
       name: data.name,
       photoUrl: data.photoUrl,
     };
-  }).fail((error) => {
-    console.log(`error getting user. ${error}`);
   });
 };
 
-const getComments = () => {
-  $.get(`${backendUrl}/api/comments`, (data) => {
-    const comments = data.comments;
-    let commentRows = "";
-    comments.forEach((comment) => {
-      commentRows += getCommentRow(
-        comment.id,
-        comment.user.photoUrl,
-        comment.user.name,
-        comment.createdAt,
-        comment.comment
-      );
-    });
-    $("#comments").append(commentRows);
-  }).fail(function (error) {
-    console.log(`error fetching comments. ${error}`);
+const getComments = async () => {
+  return $.ajax({
+    type: "GET",
+    url: `${backendUrl}/api/comments`,
+    headers: {
+      user: user.id,
+    },
+    dataType: "json",
+    success: (data) => {
+      const comments = data.comments;
+      let commentRows = "";
+      comments.forEach((comment) => {
+        commentRows += getCommentRow(
+          comment.id,
+          comment.user.photoUrl,
+          comment.user.name,
+          comment.createdAt,
+          comment.comment,
+          comment.totalUpvotes,
+          comment.hasUpvoted
+        );
+      });
+      $("#comments").append(commentRows);
+    },
   });
 };
 
-const createComment = () => {
+const createComment = async () => {
   $("#create-comment").submit((event) => {
     event.preventDefault();
     const comment = $("#comment").val();
@@ -49,7 +60,7 @@ const createComment = () => {
       url: `${backendUrl}/api/comments`,
       data: { comment },
       headers: {
-        createdby: user.id,
+        user: user.id,
       },
       dataType: "json",
       success: (data) => {
@@ -58,7 +69,9 @@ const createComment = () => {
           user.photoUrl,
           user.name,
           data.createdAt,
-          comment
+          comment,
+          0,
+          false
         );
         $("#comments").append(commentRow);
         $("#comment").val("");
@@ -88,7 +101,9 @@ const getCommentRow = (
   userPhotoUrl,
   userName,
   commentCreatedAt,
-  comment
+  comment,
+  totalUpvotes,
+  hasUpvoted
 ) => {
   return `
       <div class="d-flex flex-row align-items-start mt-5" id="${commentId}">
@@ -119,17 +134,48 @@ const getCommentRow = (
           </div>
           <div class="d-flex flex-row align-items-start">
             <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link c-text-secondary" href="#"
-                  ><i class="bi bi-caret-up-fill"></i> Upvote</a
+              <li class="nav-item btn-upvote" data-upvoted=${hasUpvoted} data-commentId="${commentId}">
+                <a class="nav-link nav-link-focus nav-link-btn c-text-secondary"
+                  ><i class="bi bi-caret-up-fill"></i> <span class="totalUpvotes">${totalUpvotes}</span> <span class="upvoteText">${
+    hasUpvoted ? "Remove Upvote" : "Upvote"
+  }</span> </a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link c-text-secondary" href="#">Reply</a>
+                <a class="nav-link nav-link-focus nav-link-btn c-text-secondary">Reply</a>
               </li>
             </ul>
           </div>
         </div>
       </div>
       `;
+};
+
+const handleUpvote = () => {
+  $(`#comments`).on("click", ".btn-upvote", function (event) {
+    const commentId = $(this).attr("data-commentId");
+    const hasUpvoted = $(this).attr("data-upvoted");
+    const upvoteNode = $(this).find(".totalUpvotes");
+    const upvotes = Number(upvoteNode.text());
+    $.ajax({
+      type: "POST",
+      url: `${backendUrl}/api/comments/upvote/${commentId}`,
+      headers: {
+        user: user.id,
+      },
+      dataType: "json",
+      success: () => {
+        const text = hasUpvoted === "true" ? "Upvote" : "Remove Upvote";
+        const newUpvotes = hasUpvoted === "true" ? upvotes - 1 : upvotes + 1;
+        $(this).find(".upvoteText").text(text);
+        $(this).attr("data-upvoted", `${hasUpvoted === "true" ? false : true}`);
+        upvoteNode.text(newUpvotes);
+      },
+      error: function () {
+        alert(
+          "There was an error upvoting the comment. Please try again in a while."
+        );
+      },
+    });
+  });
 };

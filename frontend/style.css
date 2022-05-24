@@ -19,3 +19,11 @@
   background-color: #6f2ed9;
   border-color: #6f2ed9;
 }
+
+.nav-link-focus:focus {
+  color: #2c344a;
+}
+
+.nav-link-btn {
+  cursor: pointer;
+}
