@@ -1,17 +1,20 @@
+import React from "react";
 import Comment from "./Comment";
 
-const CommentRow = ({ userPhotoUrl }) => {
+const CommentRow = ({ comment }) => {
+  const { user, ...commentData } = comment;
+
   return (
-    <>
+    <div className="d-flex flex-row align-items-start mt-5">
       <div>
         <img
           className="rounded-circle"
           style={{ width: "41px" }}
-          src={userPhotoUrl}
+          src={user.photoUrl}
         />
       </div>
-      <Comment />
-    </>
+      <Comment comment={commentData} userName={user.name} />
+    </div>
   );
 };
 

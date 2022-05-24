@@ -1,7 +1,8 @@
 import React from "react";
+import CommentList from "./components/CommentList";
 
 const App = () => {
-  return <h1>React Component</h1>;
+  return <CommentList />;
 };
 
 export default App;
