@@ -2,6 +2,7 @@ import { User } from "../entities/user";
 
 export interface CreateComment {
   comment: string;
+  parentId?: number;
 }
 
 export interface Comment {
@@ -12,4 +13,6 @@ export interface Comment {
   user: User;
   hasUpvoted: boolean;
   totalUpvotes: number;
+  subComments: Comment[];
+  parentId?: number;
 }

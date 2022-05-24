@@ -5,6 +5,7 @@ import {
   CreateComment,
   Comment as CommentModel,
 } from "../models/comment.model";
+import commentUtilities from "./comment.utilities";
 
 const mapCreateCommentToCommentEntity = (
   comment: CreateComment,
@@ -13,6 +14,7 @@ const mapCreateCommentToCommentEntity = (
   return plainToClass(Comment, {
     createdBy,
     comment: comment.comment,
+    parentId: comment.parentId,
   });
 };
 
@@ -30,7 +32,8 @@ const mapCommentEntityToCommentModel = (
   comments: Comment[],
   userId: number
 ): CommentModel[] => {
-  const commentModels: CommentModel[] = [];
+  const commentsMap =
+    commentUtilities.generateCommentMapForChildComments(comments);
 
   return comments.map((comment) => {
     let hasUpvoted = false;
@@ -41,6 +44,11 @@ const mapCommentEntityToCommentModel = (
       }
     }
 
+    const subCommentsModel = mapCommentEntityToCommentModel(
+      commentsMap.get(comment.id) ?? [],
+      userId
+    );
+
     return {
       hasUpvoted,
       id: comment.id,
@@ -49,6 +57,8 @@ const mapCommentEntityToCommentModel = (
       createdAt: comment.createdAt,
       user: comment.user,
       totalUpvotes: comment.totalUpvotes,
+      subComments: subCommentsModel,
+      parentId: comment.parentId,
     } as CommentModel;
   });
 };
