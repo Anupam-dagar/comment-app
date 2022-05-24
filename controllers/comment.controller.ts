@@ -8,7 +8,7 @@ import { ApiResponse } from "../utils/apiresponse";
 const createComment: IController = asyncController(
   async (req: Request, res: Response) => {
     const body: CreateComment = req.body;
-    const createdBy: string = req.headers.createdby as string;
+    const createdBy: number = Number(req.headers.createdby) as number;
     const comment = await commentService.createComment(body, createdBy);
     ApiResponse.success(res, comment, 200);
   }
@@ -21,7 +21,17 @@ const getComments: IController = asyncController(
   }
 );
 
+const upvoteComment: IController = asyncController(
+  async (req: Request, res: Response) => {
+    const commentId: number = Number(req.params.commentId);
+    const upvotedBy: number = Number(req.headers.createdby) as number;
+    const upvote = await commentService.upvoteComment(commentId, upvotedBy);
+    ApiResponse.success(res, { upvote }, 200);
+  }
+);
+
 export default {
   createComment,
   getComments,
+  upvoteComment,
 };

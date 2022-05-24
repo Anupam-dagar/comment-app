@@ -9,18 +9,21 @@ import {
 import { Comment } from "./comments";
 
 @Entity()
-export class CommentUpvotes {
+export class Upvotes {
   @PrimaryGeneratedColumn()
   public id: number;
 
   @Column()
-  public commentId: string;
+  public commentId: number;
 
   @Column()
-  public upvotedBy: string;
+  public upvotedBy: number;
 
   @CreateDateColumn()
   public createdAt: string;
+
+  @Column("datetime", { default: null })
+  public deleted_token: string;
 
   @ManyToOne(() => Comment, (comment) => comment.upvotes)
   @JoinColumn()

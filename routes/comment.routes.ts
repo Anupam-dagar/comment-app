@@ -14,6 +14,12 @@ router.post(
   commentController.createComment
 );
 
+router.post(
+  "/upvote/:commentId",
+  validator.headers(headersSchema.authoriseSchema),
+  commentController.upvoteComment
+);
+
 router.get("/", commentController.getComments);
 
 export default router;
