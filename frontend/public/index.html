@@ -23,43 +23,6 @@
     <title>Comment App</title>
   </head>
   <body>
-    <div class="container my-5">
-      <h3>Discussion</h3>
-      <div class="d-flex flex-row align-items-center border-bottom pb-5 mt-5">
-        <div>
-          <img
-            id="current-user"
-            class="rounded-circle"
-            style="width: 41px"
-            src="https://ui-avatars.com/api/?background=random&name="
-          />
-        </div>
-        <div class="flex-fill">
-          <form class="d-flex flex-row" id="create-comment">
-            <div class="flex-fill px-3">
-              <input
-                type="text"
-                class="form-control"
-                id="comment"
-                placeholder="What are your thoughts?"
-                maxlength="255"
-              />
-            </div>
-            <div class="flex-shrink-1">
-              <button
-                type="submit"
-                id="create-comment-button"
-                class="btn btn-primary c-btn-primary"
-                disabled
-              >
-                Comment
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div id="comments"></div>
-    </div>
+    <div id="root"></div>
   </body>
 </html>

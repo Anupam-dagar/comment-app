@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
+import CommentsContext from "../store/CommentsContext";
 import CommentRow from "./CommentRow";
 
 const CommentList = () => {
+  const commentsContext = useContext(CommentsContext);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -13,7 +15,7 @@ const CommentList = () => {
     })
       .then(async (data) => await data.json())
       .then((data) => {
-        setComments(data.comments);
+        commentsContext.setComments(data.comments);
       })
       .catch((error) => {
         console.log(
@@ -23,6 +25,11 @@ const CommentList = () => {
         );
       });
   }, []);
+
+  useEffect(() => {
+    setComments(commentsContext.comments);
+  }, [commentsContext]);
+
   return (
     <>
       {comments.map((comment) => {
