@@ -1,18 +1,17 @@
 import React, { useContext, useState } from "react";
 import config from "../constants/config";
+import AuthContext from "../store/AuthContext";
 import CommentsContext from "../store/CommentsContext";
 
 const CreateComment = () => {
   const [comment, setComment] = useState("");
   const commentsContext = useContext(CommentsContext);
+  const authContext = useContext(AuthContext);
+  const defaultImage = "https://ui-avatars.com/api/?background=random&name=";
 
   const createComment = async (event) => {
     event.preventDefault();
-    const user = {
-      id: localStorage.getItem("id"),
-      name: localStorage.getItem("name"),
-      photoUrl: localStorage.getItem("photoUrl"),
-    };
+    const user = authContext.user;
     let response;
     try {
       response = await fetch(`${config.backendUrl}/api/comments`, {
@@ -46,6 +45,10 @@ const CreateComment = () => {
     setComment("");
   };
 
+  const getUserImage = () => {
+    return authContext.user.photoUrl ? authContext.user.photoUrl : defaultImage;
+  };
+
   return (
     <div className="d-flex flex-row align-items-center border-bottom pb-5 mt-5">
       <div>
@@ -53,7 +56,7 @@ const CreateComment = () => {
           id="current-user"
           className="rounded-circle"
           style={{ width: "41px" }}
-          src="https://ui-avatars.com/api/?background=random&name="
+          src={getUserImage()}
         />
       </div>
       <div className="flex-fill">

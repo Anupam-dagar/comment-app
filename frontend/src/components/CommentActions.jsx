@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import config from "../constants/config";
+import AuthContext from "../store/AuthContext";
 
 const CommentActions = ({ id, hasUpvoted, totalUpvotes }) => {
   const [upvotesCount, setUpvotesCount] = useState(totalUpvotes);
   const [isCommentUpvoted, setIsCommentUpvoted] = useState(hasUpvoted);
+  const authContext = useContext(AuthContext);
 
   const handleUpvote = async () => {
-    console.log({ upvotesCount });
-    const user = localStorage.getItem("id");
+    const user = authContext.user;
     await fetch(`${config.backendUrl}/api/comments/upvote/${id}`, {
       method: "POST",
       headers: {
-        user,
+        user: user.id,
       },
     });
     setUpvotesCount((prevCount) => {
