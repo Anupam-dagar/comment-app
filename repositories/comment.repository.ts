@@ -27,7 +27,7 @@ const CommentRepository = dbConfig.getRepository(Comment).extend({
         `${Comment.name}.totalUpvotes`,
         (qb) => qb.where(`${Comment.name}.totalUpvotes.deleted_token IS NULL`)
       )
-      .orderBy(`${Comment.name}.createdAt`, "DESC")
+      .orderBy(`${Comment.name}.createdAt`, "ASC")
       .getMany();
   },
 });

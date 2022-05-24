@@ -30,10 +30,10 @@ const mapCommentEntityToCommentModel = (
   comments: Comment[],
   userId: number
 ): CommentModel[] => {
-  let hasUpvoted = false;
   const commentModels: CommentModel[] = [];
 
   return comments.map((comment) => {
+    let hasUpvoted = false;
     for (const upvote of comment.upvotes) {
       if (upvote.upvotedBy === userId) {
         hasUpvoted = true;
