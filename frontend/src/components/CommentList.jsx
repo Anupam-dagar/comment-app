@@ -11,8 +11,15 @@ const CommentList = () => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    getUser().then(() => getComments());
+    getUser();
   }, []);
+
+  useEffect(() => {
+    if (!authContext.user) {
+      return;
+    }
+    getComments();
+  }, [authContext]);
 
   const getUser = async () => {
     try {
@@ -26,11 +33,10 @@ const CommentList = () => {
   };
 
   const getComments = async () => {
-    const user = authContext.user;
     try {
       let comments = await fetch(`${process.env.BACKEND_URL}/api/comments`, {
         headers: {
-          user: user.id,
+          user: authContext.user.id,
         },
       });
       comments = await comments.json();
