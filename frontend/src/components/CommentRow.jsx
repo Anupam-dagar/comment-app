@@ -5,7 +5,8 @@ const CommentRow = ({ comment }) => {
   const { user, subComments, ...commentData } = comment;
 
   return (
-    <div className="d-flex flex-row align-items-start mt-5">
+    <div className="position-relative d-flex flex-row align-items-start mt-5">
+      {subComments.length > 0 && <div className="thread-border" />}
       <div>
         <img
           className="rounded-circle"
