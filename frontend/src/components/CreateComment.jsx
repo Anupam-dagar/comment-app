@@ -46,7 +46,7 @@ const CreateComment = () => {
   };
 
   const getUserImage = () => {
-    return authContext.user.photoUrl ? authContext.user.photoUrl : defaultImage;
+    return authContext.user ? authContext.user.photoUrl : defaultImage;
   };
 
   return (
