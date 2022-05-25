@@ -1,11 +1,11 @@
 import React from "react";
 import Comment from "./Comment";
 
-const CommentRow = ({ comment }) => {
-  const { user, subComments, ...commentData } = comment;
+const SubCommentRow = ({ comment }) => {
+  const { user, ...commentData } = comment;
 
   return (
-    <div className="d-flex flex-row align-items-start mt-5">
+    <div className="d-flex flex-row align-items-start mt-5 px-2">
       <div>
         <img
           className="rounded-circle"
@@ -14,12 +14,12 @@ const CommentRow = ({ comment }) => {
         />
       </div>
       <Comment
-        subComments={subComments}
         comment={commentData}
         userName={user.name}
+        userPhoto={user.photoUrl}
       />
     </div>
   );
 };
 
-export default CommentRow;
+export default SubCommentRow;

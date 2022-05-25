@@ -1,8 +1,9 @@
 import React from "react";
 import CommentActions from "./CommentActions";
 import CommentHeader from "./CommentHeader";
+import SubCommentRow from "./SubCommentRow";
 
-const Comment = ({ comment, userName }) => {
+const Comment = ({ comment, userName, subComments }) => {
   const {
     id,
     createdAt,
@@ -23,6 +24,10 @@ const Comment = ({ comment, userName }) => {
         hasUpvoted={hasUpvoted}
         totalUpvotes={totalUpvotes}
       />
+      {subComments &&
+        subComments.map((subComment) => {
+          return <SubCommentRow key={subComment.id} comment={subComment} />;
+        })}
     </div>
   );
 };
