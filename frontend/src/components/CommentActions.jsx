@@ -1,25 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import config from "../constants/config";
 import AuthContext from "../store/AuthContext";
+import CommentsContext from "../store/CommentsContext";
 import CreateComment from "./CreateComment";
 
 const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
   const [upvotesCount, setUpvotesCount] = useState(totalUpvotes);
   const [isCommentUpvoted, setIsCommentUpvoted] = useState(hasUpvoted);
   const authContext = useContext(AuthContext);
+  const commentsContext = useContext(CommentsContext);
 
   const [isReplying, setIsReplying] = useState(false);
 
   const handleUpvote = async () => {
     const user = authContext.user;
+    const body = {
+      parentId,
+    };
     await fetch(`${config.backendUrl}/api/comments/upvote/${id}`, {
       method: "POST",
+      body: JSON.stringify(body),
       headers: {
         user: user.id,
+        "Content-Type": "application/json",
       },
-    });
-    setUpvotesCount((prevCount) => {
-      return isCommentUpvoted ? prevCount - 1 : prevCount + 1;
     });
     setIsCommentUpvoted((previousState) => !previousState);
   };
@@ -31,6 +35,10 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
   const commentCreated = () => {
     setIsReplying(false);
   };
+
+  useEffect(() => {
+    setUpvotesCount(totalUpvotes);
+  }, [commentsContext]);
 
   return (
     <>

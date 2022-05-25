@@ -4,6 +4,7 @@ import config from "../constants/config";
 import AuthContext from "../store/AuthContext";
 import CommentsContext from "../store/CommentsContext";
 import CommentRow from "./CommentRow";
+import io from "socket.io-client";
 
 const CommentList = () => {
   const commentsContext = useContext(CommentsContext);
@@ -12,6 +13,7 @@ const CommentList = () => {
 
   useEffect(() => {
     getUser();
+    initialiseWebsocketConnection();
   }, []);
 
   useEffect(() => {
@@ -20,6 +22,13 @@ const CommentList = () => {
     }
     getComments();
   }, [authContext]);
+
+  const initialiseWebsocketConnection = () => {
+    const socket = io(config.backendUrl);
+    socket.on("comments", (data) => {
+      commentsContext.updateUpvote(data);
+    });
+  };
 
   const getUser = async () => {
     try {
