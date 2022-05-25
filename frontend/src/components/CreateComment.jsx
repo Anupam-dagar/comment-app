@@ -31,7 +31,7 @@ const CreateComment = ({ parentId, commentCreated }) => {
       });
       response = await response.json();
     } catch (error) {
-      alert(`Error upvoting comment. Please try again.`);
+      alert(`Error creating comment. Please try again.`);
       return;
     }
 

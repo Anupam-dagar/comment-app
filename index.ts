@@ -1,13 +1,13 @@
 import "dotenv/config";
 import "reflect-metadata";
 import { connectToDatabase } from "./utils/db.js";
-import app from "./utils/express";
+import server from "./utils/express";
 
 const port = process.env.PORT;
 
 connectToDatabase(() => {
   console.log("database connected.");
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 });
