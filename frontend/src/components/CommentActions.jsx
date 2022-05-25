@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import config from "../constants/config";
 import AuthContext from "../store/AuthContext";
 import CommentsContext from "../store/CommentsContext";
@@ -9,6 +9,7 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
   const [isCommentUpvoted, setIsCommentUpvoted] = useState(hasUpvoted);
   const authContext = useContext(AuthContext);
   const commentsContext = useContext(CommentsContext);
+  const replyBoxRef = useRef();
 
   const [isReplying, setIsReplying] = useState(false);
 
@@ -40,6 +41,24 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
     setUpvotesCount(totalUpvotes);
   }, [commentsContext]);
 
+  useEffect(() => {
+    if (isReplying) {
+      console.log(replyBoxRef);
+      replyBoxRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [isReplying]);
+
+  const showHideReplyBox = () => {
+    if (!parentId) {
+      setIsReplying((prevValue) => {
+        return !prevValue;
+      });
+    }
+  };
+
   return (
     <>
       <div className="d-flex flex-row align-items-start">
@@ -54,11 +73,7 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
           <li className="nav-item">
             <a
               className="nav-link nav-link-focus nav-link-btn c-text-secondary"
-              onClick={() => {
-                if (!parentId) {
-                  setIsReplying((prevValue) => !prevValue);
-                }
-              }}
+              onClick={showHideReplyBox}
             >
               Reply
             </a>
@@ -66,7 +81,9 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
         </ul>
       </div>
       {isReplying && (
-        <CreateComment parentId={parentId} commentCreated={commentCreated} />
+        <span ref={replyBoxRef}>
+          <CreateComment parentId={id} commentCreated={commentCreated} />
+        </span>
       )}
     </>
   );

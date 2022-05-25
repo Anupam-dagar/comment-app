@@ -38,11 +38,13 @@ const CreateComment = ({ parentId, commentCreated }) => {
     const newComment = {
       comment,
       user,
+      parentId,
       hasUpvoted: false,
       id: response.id,
       createdBy: user.id,
       createdAt: response.createdAt,
       totalUpvotes: 0,
+      subComments: [],
     };
 
     if (parentId) {
