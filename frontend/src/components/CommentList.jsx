@@ -42,7 +42,9 @@ const CommentList = () => {
       comments = await comments.json();
       commentsContext.setComments(comments.comments);
     } catch (error) {
-      console.log(`Error getting comments for user ${user.id}: ${error}`);
+      console.log(
+        `Error getting comments for user ${authContext.user.id}: ${error}`
+      );
     }
   };
 

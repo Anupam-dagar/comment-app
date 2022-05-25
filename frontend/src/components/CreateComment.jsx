@@ -3,7 +3,7 @@ import config from "../constants/config";
 import AuthContext from "../store/AuthContext";
 import CommentsContext from "../store/CommentsContext";
 
-const CreateComment = () => {
+const CreateComment = ({ parentId, commentCreated }) => {
   const [comment, setComment] = useState("");
   const commentsContext = useContext(CommentsContext);
   const authContext = useContext(AuthContext);
@@ -13,6 +13,13 @@ const CreateComment = () => {
     event.preventDefault();
     const user = authContext.user;
     let response;
+    const body = {
+      comment,
+    };
+    if (parentId) {
+      body.parentId = parentId;
+    }
+
     try {
       response = await fetch(`${config.backendUrl}/api/comments`, {
         method: "POST",
@@ -20,7 +27,7 @@ const CreateComment = () => {
           user: user.id,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment }),
+        body: JSON.stringify(body),
       });
       response = await response.json();
     } catch (error) {
@@ -38,10 +45,12 @@ const CreateComment = () => {
       totalUpvotes: 0,
     };
 
-    commentsContext.setComments((prevComments) => [
-      ...prevComments,
-      newComment,
-    ]);
+    if (parentId) {
+      commentsContext.addSubComment(newComment, parentId);
+      commentCreated();
+    } else {
+      commentsContext.addComment(newComment);
+    }
     setComment("");
   };
 

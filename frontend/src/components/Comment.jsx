@@ -3,7 +3,7 @@ import CommentActions from "./CommentActions";
 import CommentHeader from "./CommentHeader";
 import SubCommentRow from "./SubCommentRow";
 
-const Comment = ({ comment, userName, subComments }) => {
+const Comment = ({ comment, userName, subComments, parentId }) => {
   const {
     id,
     createdAt,
@@ -23,6 +23,7 @@ const Comment = ({ comment, userName, subComments }) => {
         id={id}
         hasUpvoted={hasUpvoted}
         totalUpvotes={totalUpvotes}
+        parentId={parentId}
       />
       {subComments &&
         subComments.map((subComment) => {

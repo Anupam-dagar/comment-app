@@ -17,6 +17,7 @@ const SubCommentRow = ({ comment }) => {
         comment={commentData}
         userName={user.name}
         userPhoto={user.photoUrl}
+        parentId={comment.parentId}
       />
     </div>
   );
