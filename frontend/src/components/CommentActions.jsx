@@ -51,16 +51,18 @@ const CommentActions = ({ id, hasUpvoted, totalUpvotes, parentId }) => {
               <span className="upvoteText">{getUpvoteText()}</span>
             </a>
           </li>
-          {!parentId && (
-            <li className="nav-item">
-              <a
-                className="nav-link nav-link-focus nav-link-btn c-text-secondary"
-                onClick={() => setIsReplying((prevValue) => !prevValue)}
-              >
-                Reply
-              </a>
-            </li>
-          )}
+          <li className="nav-item">
+            <a
+              className="nav-link nav-link-focus nav-link-btn c-text-secondary"
+              onClick={() => {
+                if (!parentId) {
+                  setIsReplying((prevValue) => !prevValue);
+                }
+              }}
+            >
+              Reply
+            </a>
+          </li>
         </ul>
       </div>
       {isReplying && (
