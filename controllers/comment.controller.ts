@@ -25,8 +25,13 @@ const getComments: IController = asyncController(
 const upvoteComment: IController = asyncController(
   async (req: Request, res: Response) => {
     const commentId: number = Number(req.params.commentId);
+    const { parentId }: { parentId: number } = req.body;
     const upvotedBy: number = Number(req.headers.user) as number;
-    const upvote = await commentService.upvoteComment(commentId, upvotedBy);
+    const upvote = await commentService.upvoteComment(
+      commentId,
+      upvotedBy,
+      parentId
+    );
     ApiResponse.success(res, { upvote }, 200);
   }
 );
